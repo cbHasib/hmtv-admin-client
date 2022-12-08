@@ -4,6 +4,7 @@ import {
   HiOutlineLogout,
   HiOutlinePlus,
   HiOutlineVideoCamera,
+  HiOutlineViewGrid,
 } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../../Contexts/UserContext";
@@ -26,6 +27,42 @@ const DashboardSidebar = () => {
             <HiOutlineHome className="w-5 h-5" />
           </span>
           <span className="ml-2 text-sm tracking-wide truncate">Dashboard</span>
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink
+          to="/categories"
+          className={({ isActive }) =>
+            isActive
+              ? "relative flex flex-row items-center h-11 focus:outline-none bg-blue-800 dark:bg-gray-600 text-white-800 border-l-4 border-transparent border-blue-400 dark:border-gray-800 pr-6"
+              : "relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6"
+          }
+        >
+          <span className="inline-flex justify-center items-center ml-4">
+            <HiOutlineViewGrid className="w-5 h-5" />
+          </span>
+          <span className="ml-2 text-sm tracking-wide truncate">
+            Categories
+          </span>
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink
+          to="/add-category"
+          className={({ isActive }) =>
+            isActive
+              ? "relative flex flex-row items-center h-11 focus:outline-none bg-blue-800 dark:bg-gray-600 text-white-800 border-l-4 border-transparent border-blue-400 dark:border-gray-800 pr-6"
+              : "relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6"
+          }
+        >
+          <span className="inline-flex justify-center items-center ml-4">
+            <HiOutlinePlus className="w-5 h-5" />
+          </span>
+          <span className="ml-2 text-sm tracking-wide truncate">
+            Add Category
+          </span>
         </NavLink>
       </li>
 

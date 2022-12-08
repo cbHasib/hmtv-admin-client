@@ -140,7 +140,7 @@ const Channels = () => {
   return (
     <div className="px-5">
       <h4 className="mb-4 text-2xl font-semibold text-gray-600 dark:text-gray-300">
-        All Products
+        All Channels
       </h4>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
         <div className="w-full overflow-x-auto">
