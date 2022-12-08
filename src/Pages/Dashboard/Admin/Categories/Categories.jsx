@@ -86,12 +86,10 @@ const Categories = () => {
                   className="text-gray-700 dark:text-gray-400"
                   key={category?._id}
                 >
-                  <td className="px-4 py-3 text-xs font-bold">{index + 1}</td>
+                  <td className="px-4 py-3 font-bold">{index + 1}</td>
 
-                  <td className="px-4 py-3 text-xs">
-                    {category.category_name}
-                  </td>
-                  <td className="px-4 py-3 text-xs">
+                  <td className="px-4 py-3">{category.category_name}</td>
+                  <td className="px-4 py-3">
                     {new Date(category.last_updated).toLocaleString()}
                   </td>
 
