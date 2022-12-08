@@ -16,6 +16,7 @@ const UpdateChannel = () => {
   const [submitLoad, setSubmitLoad] = useState(false);
   const { register, reset, handleSubmit } = useForm();
   const [channel, setChannel] = useState({});
+  const [category, setCategory] = useState([]);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -37,12 +38,26 @@ const UpdateChannel = () => {
         toast.error(data.message);
         navigate("/channels");
       }
+    };
+
+    const getCategory = async () => {
+      setLoadingData(true);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/category-list`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setCategory(data.data);
+      }
       setLoadingData(false);
     };
+    getCategory();
     getChannel();
+
+    setLoadingData(false);
   }, [id, navigate]);
 
-  useTitle("Add New Channel");
+  useTitle("Update Channel");
 
   const handleUpdateChannel = async (data) => {
     setSubmitLoad(true);
@@ -62,7 +77,6 @@ const UpdateChannel = () => {
         data.channel_logo = imgData.data.display_url;
       }
     } else {
-      setSubmitLoad(false);
       data.channel_logo = channel.channel_logo;
     }
 
@@ -97,7 +111,7 @@ const UpdateChannel = () => {
     }
   };
 
-  if (loading || loadingData) {
+  if (loading || loadingData || !channel || !category) {
     return <LoadingSpinner />;
   }
   return (
@@ -153,46 +167,27 @@ const UpdateChannel = () => {
               />
             </div>
             <div className="flex gap-4" id="checkbox">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Bangladeshi"
-                  value="Bangladeshi"
-                  {...register("category")}
-                />
-                <Label htmlFor="Bangladeshi">Bangladeshi</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="News" value="News" {...register("category")} />
-                <Label htmlFor="News">News</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Sports"
-                  value="Sports"
-                  {...register("category")}
-                />
-                <Label htmlFor="Sports">Sports</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Indian"
-                  value="Indian"
-                  {...register("category")}
-                />
-                <Label htmlFor="Indian">Indian</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Entertainment"
-                  value="Entertainment"
-                  {...register("category")}
-                />
-                <Label htmlFor="Entertainment">Entertainment</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="Music" value="Music" {...register("category")} />
-                <Label htmlFor="Music">Music</Label>
-              </div>
+              {category.map((cat) => {
+                return (
+                  <div className="flex items-center gap-2" key={cat._id}>
+                    <Checkbox
+                      id={cat.category_name}
+                      value={cat.category_name}
+                      {...register("category")}
+                      defaultChecked={
+                        channel?.category &&
+                        channel?.category?.includes(cat.category_name)
+                          ? true
+                          : false
+                      }
+                    />
+                    <Label htmlFor={cat.category_name}>
+                      {cat.category_name}
+                    </Label>
+                  </div>
+                );
+              })}
+
               <div className="flex items-center gap-2">
                 <Checkbox
                   id="Hollywood"
