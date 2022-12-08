@@ -18,6 +18,7 @@ const AddChannel = () => {
   const { register, reset, handleSubmit } = useForm();
   const [channelCount, setChannelCount] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
+  const [category, setCategory] = useState([]);
 
   const navigate = useNavigate();
 
@@ -33,9 +34,21 @@ const AddChannel = () => {
       if (data.success) {
         setChannelCount(data.data);
       }
+    };
+
+    const getCategory = async () => {
+      setLoadingData(true);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/category-list`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setCategory(data.data);
+      }
       setLoadingData(false);
     };
     getChannelCount();
+    getCategory();
   }, []);
 
   const handleAddChannel = async (data) => {
@@ -137,54 +150,20 @@ const AddChannel = () => {
               <Label htmlFor="channel_category" value="Channel Category" />
             </div>
             <div className="flex gap-4" id="checkbox">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Bangladeshi"
-                  value="Bangladeshi"
-                  {...register("category")}
-                />
-                <Label htmlFor="Bangladeshi">Bangladeshi</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="News" value="News" {...register("category")} />
-                <Label htmlFor="News">News</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Sports"
-                  value="Sports"
-                  {...register("category")}
-                />
-                <Label htmlFor="Sports">Sports</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Indian"
-                  value="Indian"
-                  {...register("category")}
-                />
-                <Label htmlFor="Indian">Indian</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Entertainment"
-                  value="Entertainment"
-                  {...register("category")}
-                />
-                <Label htmlFor="Entertainment">Entertainment</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="Music" value="Music" {...register("category")} />
-                <Label htmlFor="Music">Music</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Hollywood"
-                  value="Hollywood"
-                  {...register("category")}
-                />
-                <Label htmlFor="Hollywood">Hollywood</Label>
-              </div>
+              {category.map((item) => {
+                return (
+                  <div className="flex items-center gap-2" key={item._id}>
+                    <Checkbox
+                      id={item.category_name}
+                      value={item.category_name}
+                      {...register("category")}
+                    />
+                    <Label htmlFor={item.category_name}>
+                      {item.category_name}
+                    </Label>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
