@@ -149,7 +149,7 @@ const AddChannel = () => {
             <div className="mb-2 block w-full">
               <Label htmlFor="channel_category" value="Channel Category" />
             </div>
-            <div className="flex gap-4" id="checkbox">
+            <div className="flex gap-4 flex-wrap" id="checkbox">
               {category.map((item) => {
                 return (
                   <div className="flex items-center gap-2" key={item._id}>

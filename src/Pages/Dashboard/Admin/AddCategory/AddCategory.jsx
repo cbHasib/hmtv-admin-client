@@ -16,8 +16,6 @@ const AddCategory = () => {
   const navigate = useNavigate();
 
   const handleAddCategory = async (formData) => {
-    console.log(formData);
-
     setSubmitLoad(true);
 
     try {

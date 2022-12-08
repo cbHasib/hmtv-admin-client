@@ -1,7 +1,12 @@
 import { Button } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { HiPencil, HiTrash } from "react-icons/hi";
+import {
+  HiOutlineArrowDown,
+  HiOutlineArrowUp,
+  HiPencil,
+  HiTrash,
+} from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import useScrollToTop from "../../../../hooks/useScrollToTop";
 import useTitle from "../../../../hooks/useTitle";
@@ -14,6 +19,7 @@ const Categories = () => {
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -30,7 +36,7 @@ const Categories = () => {
       setLoading(false);
     };
     getCategories();
-  }, []);
+  }, [refresh]);
 
   const handleEdit = (id) => {
     navigate(`/update-category/${id}`);
@@ -59,6 +65,48 @@ const Categories = () => {
         toast.error(data.error);
       }
     }
+  };
+
+  const handleSerialDown = (id, serial) => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/category-serial-down/${id}/${serial}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+          setRefresh(!refresh);
+        } else {
+          toast.error(data.error);
+        }
+      });
+  };
+
+  const handleSerialUp = (id, serial) => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/category-serial-up/${id}/${serial}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+          setRefresh(!refresh);
+        } else {
+          toast.error(data.error);
+        }
+      });
   };
 
   if (loading) {
@@ -90,7 +138,7 @@ const Categories = () => {
                   className="text-gray-700 dark:text-gray-400"
                   key={category?._id}
                 >
-                  <td className="px-4 py-3 font-bold">{index + 1}</td>
+                  <td className="px-4 py-3 font-bold">{category.serial}</td>
 
                   <td className="px-4 py-3">{category.category_name}</td>
                   <td className="px-4 py-3">
@@ -99,6 +147,33 @@ const Categories = () => {
 
                   <td className="px-4 py-3">
                     <div className="flex items-center space-x-4 text-sm">
+                      <button
+                        className={`${
+                          categories.length === index + 1 && "hidden"
+                        } flex items-center justify-between py-2 text-sm font-medium leading-5 text-orange-500 rounded-lg dark:text-gray-400 dark:hover:text-white hover:text-orange-900 focus:outline-none focus:shadow-outline-gray`}
+                        aria-label="Edit"
+                        title={categories?.serial}
+                        disabled={categories.length === index + 1}
+                        onClick={() =>
+                          handleSerialDown(category?._id, category?.serial)
+                        }
+                      >
+                        {<HiOutlineArrowDown className="w-5 h-5" />}
+                      </button>
+                      <button
+                        className={`${
+                          index === 0 && "hidden"
+                        } flex items-center justify-between py-2 text-sm font-medium leading-5 text-orange-500 rounded-lg dark:text-gray-400 dark:hover:text-white hover:text-orange-900 focus:outline-none focus:shadow-outline-gray`}
+                        aria-label="Down"
+                        disabled={index === 0}
+                        title={category?.serial}
+                        onClick={() =>
+                          handleSerialUp(category?._id, category?.serial)
+                        }
+                      >
+                        {<HiOutlineArrowUp className="w-5 h-5" />}
+                      </button>
+
                       <button
                         className="flex items-center justify-between py-2 text-sm font-medium leading-5 text-blue-700 rounded-lg dark:text-gray-400 dark:hover:text-white hover:text-blue-900 focus:outline-none focus:shadow-outline-gray"
                         aria-label="Edit"
