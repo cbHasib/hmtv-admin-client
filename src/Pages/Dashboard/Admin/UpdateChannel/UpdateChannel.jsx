@@ -175,8 +175,7 @@ const UpdateChannel = () => {
                       value={cat.category_name}
                       {...register("category")}
                       defaultChecked={
-                        channel?.category &&
-                        channel?.category?.includes(cat.category_name)
+                        channel?.category?.includes(cat?.category_name)
                           ? true
                           : false
                       }
@@ -187,15 +186,6 @@ const UpdateChannel = () => {
                   </div>
                 );
               })}
-
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="Hollywood"
-                  value="Hollywood"
-                  {...register("category")}
-                />
-                <Label htmlFor="Hollywood">Hollywood</Label>
-              </div>
             </div>
           </div>
 
