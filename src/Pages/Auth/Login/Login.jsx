@@ -45,7 +45,6 @@ const Login = () => {
         reset();
         navigate(from);
         setSubmitLoading(false);
-        console.log(result);
         toast.success(`Welcome back!`);
       })
       .catch((err) => {
